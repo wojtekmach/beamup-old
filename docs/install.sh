@@ -16,7 +16,6 @@ mkdir -p $tmp_dir
 mkdir -p $bin_dir
 cd $tmp_dir
 
-
 openssl_version=1.1.1g
 openssl_install_dir=$installs_dir/openssl/$openssl_version
 openssl_build_dir=/tmp/elixirup/installs/openssl/$openssl_version
@@ -29,18 +28,11 @@ if [ ! -d $openssl_install_dir ]; then
   curl -L -O $url
   mkdir -p $installs_dir/openssl
   tar xzf openssl-${openssl_version}-macos.tar.gz --cd $installs_dir/openssl
-  install_name_tool -change $openssl_build_dir/lib/libcrypto.1.1.dylib $openssl_install_dir/lib/libcrypto.1.1.dylib $openssl_install_dir/lib/libssl.1.1.dylib
-  install_name_tool -change $openssl_build_dir/lib/libcrypto.1.1.dylib $openssl_install_dir/lib/libcrypto.1.1.dylib $openssl_install_dir/bin/openssl
-  install_name_tool -change $openssl_build_dir/lib/libssl.1.1.dylib $openssl_install_dir/lib/libssl.1.1.dylib $openssl_install_dir/bin/openssl
-  
+
   for i in $openssl_install_dir/bin/*; do
     ln -s $i $bin_dir
   done
 fi
-
-echo
-echo "==> Testing OpenSSL"
-$bin_dir/openssl version
 
 otp_version=23.0.2
 otp_install_dir=$installs_dir/otp/$otp_version
@@ -55,7 +47,6 @@ if [ ! -d $otp_install_dir ]; then
   mkdir -p $installs_dir/otp
   tar xzf otp-${otp_version}-macos.tar.gz --cd $installs_dir/otp
   $otp_install_dir/Install -sasl $otp_install_dir
-  install_name_tool -change $openssl_build_dir/lib/libcrypto.1.1.dylib $openssl_install_dir/lib/libcrypto.1.1.dylib $otp_install_dir/lib/crypto-4.7/priv/lib/crypto.so
   
   for i in $otp_install_dir/bin/*; do
     ln -s $i $bin_dir
@@ -63,8 +54,26 @@ if [ ! -d $otp_install_dir ]; then
 fi
 
 echo
+echo "==> Rewriting shared library paths"
+
+paths=$(find ${elixirup_dir} -name '*.so' -o -name '*.dylib')
+paths="${paths} $(find ${bin_dir} -type l)"
+
+for lib in libcrypto.1.1.dylib libssl.1.1.dylib; do
+  for i in $paths; do
+    if [[ $(file --brief --mime-type $i) == "application/x-mach-binary" ]]; then
+      echo "==> Rewriting ${i}"
+      install_name_tool -change $openssl_build_dir/lib/$lib $openssl_install_dir/lib/$lib $i
+    fi
+  done
+done
+
+echo
+echo "==> Testing OpenSSL"
+$bin_dir/openssl version
+
+echo
 echo "==> Testing OTP"
-# $bin_dir/erl -eval 'io:format("SSL info:~n~p~n", [ssl:versions()]), halt().'
 $bin_dir/erl -version
 
 elixir_version=1.10.3
