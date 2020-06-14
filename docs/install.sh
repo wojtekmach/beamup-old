@@ -109,3 +109,4 @@ echo
 echo "Binaries are installed in $HOME/.elixirup/bin. Add them to you your \$PATH:"
 echo
 echo "    export PATH=\$HOME/.elixirup/bin:\$PATH"
+echo
