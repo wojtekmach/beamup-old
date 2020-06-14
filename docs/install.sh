@@ -1,7 +1,8 @@
 #!/bin/bash
 # Downloads and installs OpenSSL, OTP, and Elixir.
 #
-# Usage: bash ./install
+# Usage: bash install.sh
+
 set -euo pipefail
 
 elixirup_dir=$HOME/.elixirup
@@ -86,14 +87,16 @@ fi
 
 echo
 echo "==> Testing Elixir"
-export PATH=$bin_dir:$PATH
+export PATH="${bin_dir}:${PATH}"
 $bin_dir/elixir --version
 
+echo
 echo "==> Testing Elixir + SSL"
 $bin_dir/elixir -e "IO.inspect :ssl.versions()"
 
+echo
 echo "==> Installation complete"
-
-echo "Now update your \$PATH:"
+echo
+echo "Binaries are installed in $HOME/.elixirup/bin. Add them to you your \$PATH:"
 echo
 echo "    export PATH=\$HOME/.elixirup/bin:\$PATH"
