@@ -91,3 +91,9 @@ $bin_dir/elixir --version
 
 echo "==> Testing Elixir + SSL"
 $bin_dir/elixir -e "IO.inspect :ssl.versions()"
+
+echo "==> Installation complete"
+
+echo "Now update your \$PATH:"
+echo
+echo "    export PATH=\$HOME/.elixirup/bin:\$PATH"
