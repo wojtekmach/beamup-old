@@ -1,3 +1,3 @@
 # elixirup
 
-See <https://wojtekmach.pl/elixirup/>
+<https://wojtekmach.pl/elixirup/>
