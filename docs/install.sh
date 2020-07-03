@@ -16,23 +16,23 @@ mkdir -p $tmp_dir
 mkdir -p $bin_dir
 cd $tmp_dir
 
-openssl_version=1.1.1g
-openssl_install_dir=$installs_dir/openssl/$openssl_version
-openssl_build_dir=/tmp/elixirup/installs/openssl/$openssl_version
+# openssl_version=1.1.1g
+# openssl_install_dir=$installs_dir/openssl/$openssl_version
+# openssl_build_dir=/tmp/elixirup/installs/openssl/$openssl_version
 
-if [ ! -d $openssl_install_dir ]; then
-  echo
-  echo "==> Installing OpenSSL ${openssl_version}"
-  url=https://github.com/wojtekmach/elixirup/raw/master/archives/openssl-${openssl_version}-macos.tar.gz
-  echo "==> Downloading $url"
-  curl -L -O $url
-  mkdir -p $installs_dir/openssl
-  tar xzf openssl-${openssl_version}-macos.tar.gz --cd $installs_dir/openssl
+# if [ ! -d $openssl_install_dir ]; then
+#   echo
+#   echo "==> Installing OpenSSL ${openssl_version}"
+#   url=https://github.com/wojtekmach/elixirup/raw/master/archives/openssl-${openssl_version}-macos.tar.gz
+#   echo "==> Downloading $url"
+#   curl -L -O $url
+#   mkdir -p $installs_dir/openssl
+#   tar xzf openssl-${openssl_version}-macos.tar.gz --cd $installs_dir/openssl
 
-  for i in $openssl_install_dir/bin/*; do
-    ln -s $i $bin_dir
-  done
-fi
+#   for i in $openssl_install_dir/bin/*; do
+#     ln -s $i $bin_dir
+#   done
+# fi
 
 otp_version=23.0.2
 otp_install_dir=$installs_dir/otp/$otp_version
@@ -53,24 +53,24 @@ if [ ! -d $otp_install_dir ]; then
   done
 fi
 
-echo
-echo "==> Rewriting shared library paths"
+# echo
+# echo "==> Rewriting shared library paths"
 
-paths=$(find ${elixirup_dir} -name '*.so' -o -name '*.dylib')
-paths="${paths} $(find ${bin_dir} -type l)"
+# paths=$(find ${elixirup_dir} -name '*.so' -o -name '*.dylib')
+# paths="${paths} $(find ${bin_dir} -type l)"
 
-for lib in libcrypto.1.1.dylib libssl.1.1.dylib; do
-  for i in $paths; do
-    if [[ $(file --brief --mime-type $i) == "application/x-mach-binary" ]]; then
-      echo "==> Rewriting ${i}"
-      install_name_tool -change $openssl_build_dir/lib/$lib $openssl_install_dir/lib/$lib $i
-    fi
-  done
-done
+# for lib in libcrypto.1.1.dylib libssl.1.1.dylib; do
+#   for i in $paths; do
+#     if [[ $(file --brief --mime-type $i) == "application/x-mach-binary" ]]; then
+#       echo "==> Rewriting ${i}"
+#       install_name_tool -change $openssl_build_dir/lib/$lib $openssl_install_dir/lib/$lib $i
+#     fi
+#   done
+# done
 
-echo
-echo "==> Testing OpenSSL"
-$bin_dir/openssl version
+# echo
+# echo "==> Testing OpenSSL"
+# $bin_dir/openssl version
 
 echo
 echo "==> Testing OTP"

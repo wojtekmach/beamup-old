@@ -43,7 +43,7 @@ if [ ! -d "${dest_dir}" ]; then
   cd $src_dir
   ./otp_build autoconf
 
-  ./configure --with-ssl="${openssl_dir}" --enable-dirty-schedulers --enable-builtin-zlib --without-javac
+  ./configure --disable-dynamic-ssl-lib --with-ssl="${openssl_dir}" --enable-dirty-schedulers --enable-builtin-zlib --without-javac
 
   make -j$(getconf _NPROCESSORS_ONLN)
   make release
