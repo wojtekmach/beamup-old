@@ -17,6 +17,13 @@ apt update && apt install -y curl git build-essential autoconf libncurses-dev li
 ./build_otp 23.1.4
 ```
 
+Running with Docker:
+
+```
+docker run --rm -it ubuntu bash
+apt update && apt install -y curl unzip && curl -O https://wojtekmach.pl/beamup/install.sh && bash install.sh
+```
+
 Currently we use GitHub as storage for binary artifacts which is not nice. Eventually, we want to attach artifacts to github.com/erlang/otp releases.
 
 ## License
