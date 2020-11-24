@@ -5,25 +5,25 @@
 
 set -euo pipefail
 
-elixirup_dir=$HOME/.elixirup
-tmp_dir=$elixirup_dir/tmp
-installs_dir=$elixirup_dir/installs
-bin_dir=$elixirup_dir/bin
+beamup_dir=$HOME/.beamup
+tmp_dir=$beamup_dir/tmp
+installs_dir=$beamup_dir/installs
+bin_dir=$beamup_dir/bin
 
-echo "==> Installing to ${elixirup_dir}"
-mkdir -p $elixirup_dir
+echo "==> Installing to ${beamup_dir}"
+mkdir -p $beamup_dir
 mkdir -p $tmp_dir
 mkdir -p $bin_dir
 cd $tmp_dir
 
 otp_version=23.0.2
 otp_install_dir=$installs_dir/otp/$otp_version
-otp_build_dir=/tmp/elixirup/installs/otp/$otp_version
+otp_build_dir=/tmp/beamup/installs/otp/$otp_version
 
 if [ ! -d $otp_install_dir ]; then
   echo
   echo "==> Installing OTP ${otp_version}"
-  url=https://github.com/wojtekmach/elixirup/raw/master/archives/otp-${otp_version}-macos.tar.gz
+  url=https://github.com/wojtekmach/beamup/raw/master/archives/otp-${otp_version}-macos.tar.gz
   echo "==> Downloading $url"
   curl -L -O $url
   mkdir -p $installs_dir/otp
@@ -69,7 +69,7 @@ $bin_dir/elixir -e "IO.inspect :ssl.versions()"
 echo
 echo "==> Installation complete"
 echo
-echo "Binaries are installed in $HOME/.elixirup/bin. Add them to you your \$PATH:"
+echo "Binaries are installed in $HOME/.beamup/bin. Add them to you your \$PATH:"
 echo
-echo "    export PATH=\$HOME/.elixirup/bin:\$PATH"
+echo "    export PATH=\$HOME/.beamup/bin:\$PATH"
 echo
