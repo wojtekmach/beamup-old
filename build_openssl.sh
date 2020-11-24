@@ -16,12 +16,12 @@ set -euox pipefail
 
 wd=$PWD
 openssl_version=$1
-elixirup_dir=/tmp/elixirup
-src_root_dir=$elixirup_dir/src/openssl
+beamup_dir=/tmp/beamup
+src_root_dir=$beamup_dir/src/openssl
 src_dir=${src_root_dir}/${openssl_version}
-dest_root_dir=$elixirup_dir/installs/openssl
+dest_root_dir=$beamup_dir/installs/openssl
 dest_dir=${dest_root_dir}/${openssl_version}
-archive_root_dir=$elixirup_dir/archives
+archive_root_dir=$beamup_dir/archives
 archive_path=${archive_root_dir}/openssl-${openssl_version}-macos.tar.gz
 
 mkdir -p $src_root_dir

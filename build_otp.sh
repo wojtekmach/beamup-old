@@ -16,12 +16,12 @@ set -euox pipefail
 
 wd=$PWD
 otp_version=$1
-elixirup_dir=/tmp/elixirup
-src_root_dir=$elixirup_dir/src/otp
+beamup_dir=/tmp/beamup
+src_root_dir=$beamup_dir/src/otp
 src_dir=${src_root_dir}/${otp_version}
-dest_root_dir=$elixirup_dir/installs/otp
+dest_root_dir=$beamup_dir/installs/otp
 dest_dir=${dest_root_dir}/${otp_version}
-archive_root_dir=$elixirup_dir/archives
+archive_root_dir=$beamup_dir/archives
 archive_path=${archive_root_dir}/otp-${otp_version}-macos.tar.gz
 
 mkdir -p $src_root_dir
@@ -38,7 +38,7 @@ if [ ! -d "${src_dir}" ]; then
 fi
 
 if [ ! -d "${dest_dir}" ]; then
-  openssl_dir="${elixirup_dir}/installs/openssl/1.1.1g"
+  openssl_dir="${beamup_dir}/installs/openssl/1.1.1g"
   export RELEASE_ROOT=$dest_dir
   cd $src_dir
   ./otp_build autoconf
