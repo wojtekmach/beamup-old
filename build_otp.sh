@@ -49,6 +49,7 @@ if [ ! -d "${dest_dir}" ]; then
   # Thus we assume the build machine has openssl installed via brew install openssl,
   # sudo port install openssl, etc, and we statically link it so the end-use doesn't
   # need to have it.
+  # See: https://rentzsch.tumblr.com/post/33696323211/wherein-i-write-apples-technote-about-openssl-on
   ./configure --with-ssl --disable-ssl-dynamic-lib
   make -j$(getconf _NPROCESSORS_ONLN)
   make release
