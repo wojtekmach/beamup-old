@@ -23,7 +23,7 @@ dest_root_dir=$beamup_dir/installs/otp
 dest_dir=${dest_root_dir}/${otp_version}
 archive_root_dir=$beamup_dir/archives
 otp_basename=otp-${otp_version}-$(uname -sm | tr '[:upper:]' '[:lower:]' | tr ' ' '-').tar.gz
-archive_path=${archive_root_dir}/otp-${otp_basename}
+archive_path=${archive_root_dir}/${otp_basename}
 
 mkdir -p $src_root_dir
 mkdir -p $dest_root_dir
