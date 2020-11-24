@@ -1,3 +1,3 @@
-# elixirup
+# beamup
 
-<https://wojtekmach.pl/elixirup/>
+<https://wojtekmach.pl/beamup/>
