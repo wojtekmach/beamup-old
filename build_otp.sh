@@ -22,7 +22,8 @@ src_dir=${src_root_dir}/${otp_version}
 dest_root_dir=$beamup_dir/installs/otp
 dest_dir=${dest_root_dir}/${otp_version}
 archive_root_dir=$beamup_dir/archives
-archive_path=${archive_root_dir}/otp-${otp_version}-macos.tar.gz
+otp_basename=otp-${otp_version}-$(uname -sm | tr '[:upper:]' '[:lower:]' | tr ' ' '-').tar.gz
+archive_path=${archive_root_dir}/otp-${otp_basename}
 
 mkdir -p $src_root_dir
 mkdir -p $dest_root_dir
@@ -38,17 +39,19 @@ if [ ! -d "${src_dir}" ]; then
 fi
 
 if [ ! -d "${dest_dir}" ]; then
-  openssl_dir="${beamup_dir}/installs/openssl/1.1.1g"
   export RELEASE_ROOT=$dest_dir
   cd $src_dir
   ./otp_build autoconf
 
-  ./configure --disable-dynamic-ssl-lib --with-ssl="${openssl_dir}" --enable-dirty-schedulers --enable-builtin-zlib --without-javac
-
+  # Note for macos:
+  # We can't rely on built-in libressl since macos doesn't ship with header files.
+  # Thus we assume the build machine has openssl installed via brew install openssl,
+  # sudo port install openssl, etc, and we statically link it so the end-use doesn't
+  # need to have it.
+  ./configure --with-ssl --disable-ssl-dynamic-lib
   make -j$(getconf _NPROCESSORS_ONLN)
   make release
   make release_docs DOC_TARGETS="chunks"
-  make install
 fi
 
 if [ ! -f $archive_path ]; then
@@ -57,6 +60,4 @@ if [ ! -f $archive_path ]; then
 fi
 
 cd $wd
-
-# # post-install
-# ./Install -sasl $PWD
+cp $archive_path $wd/archives
