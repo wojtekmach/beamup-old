@@ -41,6 +41,7 @@ fi
 if [ ! -d "${dest_dir}" ]; then
   export RELEASE_ROOT=$dest_dir
   cd $src_dir
+  export ERL_TOP=`pwd`
   ./otp_build autoconf
 
   # Note for macos:
