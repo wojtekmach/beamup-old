@@ -28,7 +28,9 @@ if [ ! -d $otp_install_dir ]; then
   echo "==> Downloading $url"
   curl --fail -L -O $url
   mkdir -p $installs_dir/otp
-  tar xzf $otp_basename --cd $installs_dir/otp
+  wd=$PWD
+  cd $installs_dir/otp
+  tar xzf $wd/$otp_basename
   $otp_install_dir/Install -sasl $otp_install_dir
   
   for i in $otp_install_dir/bin/*; do
