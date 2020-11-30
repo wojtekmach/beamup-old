@@ -1,13 +1,13 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]; then
+if [ $# -ne 2 ]; then
   echo Usage:
   echo
-  echo "    ./build_otp.sh VERSION"
+  echo "    ./build_otp.sh VERSION OPENSSL_DIR"
   echo 
   echo Examples:
   echo
-  echo "    ./build_otp.sh 23.0.2"
+  echo "    ./build_otp.sh 23.1.4 \$(brew --prefix openssl)"
   echo
   exit 1
 fi
@@ -16,6 +16,7 @@ set -euox pipefail
 
 wd=$PWD
 otp_version=$1
+openssl_dir=$2
 beamup_dir=/tmp/beamup
 src_root_dir=$beamup_dir/src/otp
 src_dir=${src_root_dir}/${otp_version}
@@ -34,7 +35,7 @@ if [ ! -d "${src_dir}" ]; then
   ref=OTP-${otp_version}
   curl -L -O https://github.com/erlang/otp/archive/${ref}.tar.gz
   ls
-  tar xvzf ${ref}.tar.gz
+  tar xzf ${ref}.tar.gz
   mv otp-${ref} $src_dir
 fi
 
@@ -50,7 +51,7 @@ if [ ! -d "${dest_dir}" ]; then
   # sudo port install openssl, etc, and we statically link it so the end-use doesn't
   # need to have it.
   # See: https://rentzsch.tumblr.com/post/33696323211/wherein-i-write-apples-technote-about-openssl-on
-  ./configure --with-ssl --disable-ssl-dynamic-lib
+  ./configure --with-ssl=$openssl_dir --disable-ssl-dynamic-lib
   make -j$(getconf _NPROCESSORS_ONLN)
   make release
   make release_docs DOC_TARGETS="chunks"
